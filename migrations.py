@@ -32,9 +32,33 @@ class WordTranslateMigration(MigrationModel):
 
     _migrator = migrator
 
+class UsersMigration(MigrationModel):
+    _model = Users
+    _db = db
+    _migrator = migrator
+
+    _migrator = migrator
+
+class WordListMigration(MigrationModel):
+    _model = WordList
+    _db = db
+    _migrator = migrator
+
+    _migrator = migrator
+
+class UserWordsMigration(MigrationModel):
+    _model = UserWords
+    _db = db
+    _migrator = migrator
+
+    _migrator = migrator
+
 def migrations():
     word_audio = WordAudioMigration()
     word_translate = WordTranslateMigration()
+    users = UsersMigration()
+    word_list = WordListMigration()
+    user_words = UserWordsMigration()
 
     try:
         with db.transaction():

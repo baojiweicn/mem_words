@@ -10,6 +10,7 @@ DB_CONFIG = {
     'port': os.environ.get('port', None),
     'database': 'youdao_dict' #os.environ.get('dbname', None)
 }
+TEMPLATE_PATH = 'template/html'
 
 REDIS_DB_CONFIG = {
     'host': 'localhost',
