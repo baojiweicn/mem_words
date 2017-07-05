@@ -367,7 +367,6 @@ async def get_word_level(request,word_list_id):
         return json(words)
     return json([])
 
-
 @youdao_bp.route('/wordlists/<word_list_id:int>/review', methods=['PUT'])
 async def update_word_level(request,word_list_id,words=None):
     user_id = request['session'].get('user_id')

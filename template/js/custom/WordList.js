@@ -17,6 +17,13 @@ window.onload = function(){
   }   
 };
 
+function apdate_word_list(id,word){
+  radio = "<div class=\"radio\"><label><input type=\"radio\" "+
+          "value=\"" + id + "\" checked>" + word + "</label></div>";
+  radio_list = document.getElementById("details").children[0];
+  radio_list.innerHTML = radio_list.innerHTML + radio;
+}
+
 function update_word(word_index){
   var word = words[word_index];
   set_query(word);

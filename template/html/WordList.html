@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="background-color:#0076a5" data-wordlist={{wordlist_id}} id="wordlist">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">单词本</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">test</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" styple="height:1px;">
+        <div class="container">
+          jjjjj
+        </div>
+      </div>
+    </nav>
+    <div class="container container-fluid" style="background-color: #59bc4b; min-height:160px">
+      <div class="container text-center" style="font-family:'lucida sans unicode',arial,sans-serif">
+        <h1></h1></br></br>
+        <h1 id="query"></h1>
+        <h5 id="phonetic"></h5>
+        <audio src="#" id="pronounce"></audio>
+      </div>
+    </div>
+
+    <div class="container container-fluid" style="font-family:'lucida sans unicode',arial,sans-serif; color:#000">
+      <div style="height:20px"></div>
+      <div class="row" style="visibility:" id="details">
+        <div class="container">
+        </div>
+      </div>
+    </div>
+
+  <nav class="navbar navbar-fixed-bottom" style="min-height:40px;background-color:#0076a5">
+    <div class="input-group" id="input_area">
+        <input type="text" class="form-control" aria-label="...">
+        <span class="input-group-btn">
+        <!-- Buttons -->
+          <button class="btn btn-default" type="button">确定</button>
+          <button class="btn btn-default" type="button">取消</button>
+        </span>
+    </div>
+    <div class="row">
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#fc5d43" id="nonrecognition"><h4>不认识</h4></div>
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#ffd600" id="confusion"><h4>模糊</h4></div>
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#59bc4b" id="recognition"><h4>认识 </h4></div>
+    </div>
+  </nav>
+
+    
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/custom/WordListReview.js"></script>
+  </body>
+
+</html>
