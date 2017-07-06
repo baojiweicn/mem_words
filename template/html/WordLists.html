@@ -18,7 +18,7 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body style="background-color:#0076a5" data-wordlist={{wordlist_id}} id="wordlist">
+  <body style="background-color:#0076a5" data-wordlist=2 id="wordlist">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <a class="navbar-brand" href="#">单词本</a>
@@ -38,36 +38,34 @@
     <div class="container container-fluid" style="background-color: #59bc4b; min-height:160px">
       <div class="container text-center" style="font-family:'lucida sans unicode',arial,sans-serif">
         <h1></h1></br></br>
-        <h1 id="query"></h1>
-        <h5 id="phonetic"></h5>
-        <audio src="#" id="pronounce"></audio>
+        <h1 id="word_list">单词本</h1>
       </div>
     </div>
 
     <div class="container container-fluid" style="font-family:'lucida sans unicode',arial,sans-serif; color:#000">
       <div style="height:20px"></div>
-      <div class="row" style="visibility:hidden" id="details">
-        <div class="col-md-6">
-          [解释]<br>
-          <div style="height:5px"></div>
-          <div id="explain">
-          </div>
-          <div style="height:5px"></div>
-        </div>
-        <div class="col-md-6">
-          [例]<br>
-          <div style="height:5px"></div>
-          <div id="examples">
-          </div>
-          <div style="height:50px"></div>
+      <div class="row" style="visibility" id="details">
+        <div class="container" style="width:90%">
+
         </div>
       </div>
     </div>
+
   <nav class="navbar navbar-fixed-bottom" style="min-height:40px;background-color:#0076a5">
+    <div class="input-group" id="input_area" style="visibility:hidden">
+        <input type="text" class="form-control" aria-label="..." placeholder="单词本名字..." id="wordlist_input">
+        <span class="input-group-btn">
+          <!-- Buttons -->
+          <button class="btn btn-default" type="button" id="verifty">确认</button>
+          <button class="btn btn-default" type="button" id="cancle">取消</button>
+        </span>
+    </div>
+    
     <div class="row">
-      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#fc5d43" id="nonrecognition"><h4>不认识</h4></div>
-      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#ffd600" id="confusion"><h4>模糊</h4></div>
-      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#59bc4b" id="recognition"><h4>认识 </h4></div>
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#fc5d43" id="delete_wordlist"><h4>删除</h4></div>
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#ffd600" id="select_wordlist"><h4>选择</h4></div>
+      <div class="col-xs-4 text-center" style="min-height:40px; background-color:#59bc4b" id="add_wordlist"><h4>添加</h4></div>
+
     </div>
   </nav>
 
@@ -78,7 +76,7 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/custom/WordListReview.js"></script>
+    <script src="/js/custom/WordLists.js"></script>
   </body>
 
 </html>

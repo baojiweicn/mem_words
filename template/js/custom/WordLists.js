@@ -1,32 +1,70 @@
-var words = [];
-var words_index = 0;
-var next_step = false;
-//用于记录单词的状态
-var word_state = 'not remember';
-var words_result = {};
-var words_tmp = {};
-var wordlist_id = 0;
-window.onload = function(){
-  wordlist_id = getURLParameter("wordlist_id");
-  document.getElementById("wordlist").dataset.wordlist = wordlist_id;
-  res = get_wordlist_words(wordlist_id)
-  if(res.status == 200){
-      words = res.responseJSON;
-      update_word(0);
-  } 
-  else{
-      document.getElementById("query").innerHTML = "请登录";
-  }   
-};
-
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 };
 
-function update_word(word_index){
-  var word = words[word_index];
-  set_query(word);
+window.onload = function(){
+  load_wordlists();
+};
+
+function load_wordlists(){
+  res = get_wordlists();
+  if(res.status == 200){
+      wordlists = res.responseJSON;
+      adapt_wordlist(wordlists);
+    document.getElementById("details").style.visibility = "";
+  } 
+  else{
+      document.getElementById("query").innerHTML = "请登录";
+  }   
 }
+
+function get_wordlists(){
+  var url = "/words/wordlists/";
+  var res = $.ajax({url:url,async:false});
+  return res;
+};
+
+function adapt_wordlist(wordlists){
+  radios = "<form>"
+  for(var i=0;i<wordlists.length;i++){
+    wordlist = wordlists[i];
+    wordlist_name = wordlist["name"];
+    wordlist_id = wordlist["id"]
+    radio = "<input type=\"radio\" name=\"wordlists\" value=\""+wordlist_id+"\" checked><span> &nbsp"+wordlist_name+"</span><br>";
+    radios = radios + radio;
+  }
+  radios = radios + "</form>";
+  radio_list = document.getElementById("details").children[0];
+  radio_list.innerHTML = radios;
+};
+
+function add_wordlist(wordlist_name){
+  var url = "/words/wordlists";
+  var data = {"name":wordlist_name};
+  var res = $.ajax({
+    url:url,
+    data: JSON.stringify(data),
+    type:'post',
+    dataType:'json',
+    success: function(data){
+      load_wordlists();
+    }
+  });
+};
+
+function delete_wordlist(wordlist_name){
+    var url = "/words/wordlists";
+  var data = {"name":wordlist_name};
+  var res = $.ajax({
+    url:url,
+    data: JSON.stringify(data),
+    type:'delete',
+    dataType:'json',
+    success: function(data){
+      load_wordlists();
+    }
+  });
+};
 
 function user_login(username){
   var url = "/words/users";
@@ -51,21 +89,12 @@ function set_wordlist_words(wordlist_id){
       "state": words_result[words_key[i]]
     })
   }
-  $.ajax({
-    url:url,
-    data: JSON.stringify(put_data),
-    type:'put',
-    dataType:'json',
-    success: function(data){
-      window.location.href='/html/WordList.html?wordlist_id='+wordlist_id;
-    }
-  });
+  return
 
-  //var res = $.ajax({url:url,data:})
 };
 
 function set_query(query){
-  document.getElementById("query").textContent = query;
+	document.getElementById("query").textContent = query;
   document.getElementById("pronounce").src = '/words/audios/' + query;
   var res = load_explain(query);
   var res_basic = res.responseJSON.basic;
@@ -76,13 +105,13 @@ function set_query(query){
 };
 
 function load_explain(query){
-  var url = "/words/translates/" + query;
-  var res = $.ajax({url:url,async:false});
+	var url = "/words/translates/" + query;
+	var res = $.ajax({url:url,async:false});
   return res;
 };
 
 function set_query_phonetic(res_basic){
-  var phonetics_text = '[uk]' + res_basic['uk-phonetic'] + ' [us]' + res_basic['us-phonetic'];
+	var phonetics_text = '[uk]' + res_basic['uk-phonetic'] + ' [us]' + res_basic['us-phonetic'];
   document.getElementById("phonetic").textContent = phonetics_text;
 };
 
@@ -134,58 +163,34 @@ function next_word(){
     words_index=0;
   }
   check_empty();
-};
-
-function check_empty(){
-  if(words.length==0){
-    console.log('finished');
-    set_wordlist_words(wordlist_id);
-  }
-  else{
-    update_word(words_index);
-  }
-};
-document.getElementById("phonetic").onclick = function(){
-  next_step = false;
-  document.getElementById("pronounce").load();
-  document.getElementById("pronounce").play();
+  update_word(words_index);
 };
 
 
-document.getElementById("query").onclick = function(){
-  next_step = false;
-  document.getElementById("details").style.visibility = '';
-  document.getElementById("pronounce").load();
-  document.getElementById("pronounce").play();
+document.getElementById("delete_wordlist").onclick = function(){
+  wordlist_name = $(":radio:checked + span").text().replace(/^\s+|\s+$/g,"")
+  delete_wordlist(wordlist_name);
 };
 
-document.getElementById("nonrecognition").onclick = function(){
-  next_step = true;
-  word_state = 'not remember';
-  document.getElementById("details").style.visibility = '';
-  document.getElementById("pronounce").load();
-  document.getElementById("pronounce").play();
+
+document.getElementById("select_wordlist").onclick = function(){
+  wordlist_id = $('input:radio:checked').val();
+  window.location.href='/html/WordList.html?wordlist_id='+wordlist_id;
 };
 
-document.getElementById("confusion").onclick = function(){
-  next_step = true;
-  word_state = 'confuse';
-  document.getElementById("details").style.visibility = '';
-  document.getElementById("pronounce").load();
-  document.getElementById("pronounce").play();
+document.getElementById("add_wordlist").onclick = function(){
+  document.getElementById("input_area").style.visibility = "";
 };
 
-document.getElementById("recognition").onclick = function(){
-  next_step = true;
-  word_state = 'remember';
-  document.getElementById("details").style.visibility = '';
-  document.getElementById("pronounce").load();
-  document.getElementById("pronounce").play();
-};
-
-document.getElementById("pronounce").onended = function(){
-  if(next_step){
-    next_word();
+document.getElementById("verifty").onclick = function(){
+  wordlist_name = $("#wordlist_input").val().replace(/^\s+|\s+$/g,"");
+  if(wordlist_name !=""){
+    add_wordlist(wordlist_name);
   }
 };
+
+document.getElementById("cancle").onclick = function(){
+  document.getElementById("input_area").style.visibility = "hidden";
+};
+
 

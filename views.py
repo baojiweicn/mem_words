@@ -147,7 +147,7 @@ async def get_wechat_word_h5(request,wechat_token):
             record = await cur.fetch("select * from word_list where user_id=%s"%request['session']['user_id'])
             if record:
                 wordlist_id = record[0]['id']
-    return redirect('http://bitnotice.susnote.com/words/wordlists/%s/review/h5'%wordlist_id)
+    return redirect('http://bitnotice.susnote.com/html/WordLists.html')
 
 @youdao_bp.route('/users/wechat_user',methods=['POST'])
 async def update_wechat_user(request,user_id=None,wechat_user=None):
@@ -207,13 +207,38 @@ async def add_wordlists_word(request,wordlist_id,data={}):
 
 @youdao_bp.route('/wordlists', methods=['GET'])
 async def get_wordlists(request):
+    wordlist_id = request.args.get('id', 0)
     user_id = None
     if request['session'].get('user_id'):
         user_id = request['session'].get('user_id')
-    if user_id:
+    if user_id and wordlist_id ==0:
         async with request.app.db.acquire() as cur:
             records = await cur.fetch("select * from word_list where user_id=%s"%(user_id))
             return json(jsonify(records))
+    elif user_id:
+        async with request.app.db.acquire() as cur:
+            records = await cur.fetch("select * from word_list where user_id=%s and id =%s"%(user_id,wordlist_id))
+            return json(jsonify(records))
+
+    return json({},status=400)
+
+@youdao_bp.route('/wordlists', methods=['DELETE'])
+async def delete_wordlists(request,data={}):
+    try:
+        if not data:
+            data = ujson.loads(request.body)
+    except:
+        return json({},status=400)
+    wordlist_name = data.get("name").replace("'","''") if data.get("name") else "未命名"
+    user_id = data.get("user_id") if data.get("user_id") else request['session'].get('user_id')
+    if user_id:
+        async with request.app.db as cur:
+            r = await cur.fetch("select * from word_list where name='%s' and user_id=%s"%(wordlist_name,user_id))
+            if r:
+                wordlist_id = r[0]['id']
+                await cur.fetch("delete from user_words where word_list_id=%s"%wordlist_id)
+                res = await cur.fetch("delete from word_list where name='%s' and user_id=%s returning *"%(wordlist_name,user_id))
+                return json(jsonify(r))
     return json({},status=400)
 
 @youdao_bp.route('/wordlists', methods=['POST'])
@@ -227,7 +252,11 @@ async def add_wordlist(request,data={}):
     user_id = data.get("user_id") if data.get("user_id") else request['session'].get('user_id')
     if user_id:
         async with request.app.db as cur:
-            records = await cur.fetch("insert into word_list (create_time,words,name,category,user_id) VALUES (current_timestamp,'{}','%s','private',%s) returning *"%(wordlist_name,user_id))
+            r = await cur.fetch("select * from word_list where name='%s' and user_id=%s"%(wordlist_name,user_id))
+            if r:
+                return json(jsonify(r)[0])
+            else:
+                records = await cur.fetch("insert into word_list (create_time,words,name,category,user_id) VALUES (current_timestamp,'{}','%s','private',%s) returning *"%(wordlist_name,user_id))
             if records:
                 return json(jsonify(records)[0])
     return json({},status=400)
