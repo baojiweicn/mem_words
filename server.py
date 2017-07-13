@@ -28,4 +28,4 @@ app.config.API_PRODUCES_CONTENT_TYPES = ['application/json']
 app.config.API_CONTACT_EMAIL = 'it@baojiwei.cn'
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=51888, debug=DEBUG)
+    app.run(host="0.0.0.0", port=8000, debug=DEBUG)
