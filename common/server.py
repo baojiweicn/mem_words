@@ -7,7 +7,7 @@ from sanic import Sanic
 from sanic.response import json, text
 from sanic_openapi import swagger_blueprint, openapi_blueprint
 
-from config import DB_CONFIG, TEMPLATE_PATH
+from config import DB_CONFIG, TEMPLATE_PATH, REDIS_DB_CONFIG
 from common.db import BaseConnection
 from common.client import Client
 from jinja2 import Environment, FileSystemLoader
@@ -27,7 +27,7 @@ class Redis:
 
     async def get_redis_pool(self):
         if not self._pool:
-            self._pool = await asyncio_redis.Pool.create(host='localhost', port=6379, poolsize=10)
+            self._pool = await asyncio_redis.Pool.create(host=REDIS_DB_CONFIG['host'], port=REDIS_DB_CONFIG['port'], poolsize=10)
         return self._pool
 
 redis = Redis()
