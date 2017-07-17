@@ -45,7 +45,7 @@ function adapt_words(words){
   radios = ""
   for(var i=0;i<words.length;i++){
     word = words[i];
-    radio = "<span style=\"color:#fff\"> &nbsp"+word+"</span><br>";
+    radio = "<span style=\"color:#000\"> &nbsp"+word+"</span><br>";
     radios = radios + radio;
   }
   radio_list = document.getElementById("wordlist_details").children[0];

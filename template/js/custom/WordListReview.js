@@ -25,7 +25,8 @@ function getURLParameter(name) {
 
 function update_word(word_index){
   var word = words[word_index];
-  set_query(word);
+  set_query(word);  
+  document.getElementById("remains").innerText = '['+words.length+']';
 }
 
 function user_login(username){
