@@ -114,7 +114,7 @@ function next_word(){
       //check_empty();
     }
     else if (words[words_index] in words_tmp){
-      if (words_tmp[words[words_index]] ==3 ){
+      if (words_tmp[words[words_index]] ==2 ){
         words.splice(words_index,1);
         words_index -=1;
         //check_empty();
